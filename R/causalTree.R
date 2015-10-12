@@ -321,7 +321,8 @@ causalTree <-
     } else catmat <- ctfit$csplit
 
     ## NB: package adabag depends on 'var' being a factor.
-    if (nsplit == 0L) {                    # tree with no splits
+    if (nsplit == 0L) {   
+      # tree with no splits
 	frame <- data.frame(row.names = 1L,
 			    var = "<leaf>",
 			    n = ctfit$inode[, 5L],
@@ -361,6 +362,9 @@ causalTree <-
 	frame$yval2 <- cbind(yval2, yprob, nodeprob)
     } else if (init$numresp > 1L)
         frame$yval2 <- ctfit$dnode[, -(1L:3L), drop = FALSE]
+        #print("frame$yval2:")
+        #print(frame$yval2)
+        
 
     if (is.null(init$summary))
         stop("Initialization routine is missing the 'summary' function")
