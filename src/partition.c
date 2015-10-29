@@ -15,7 +15,7 @@
 
 int
 //partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2)
-partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2, int minsize)
+partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2, int minsize, int method, double alpha)
 {
     pNode me;
     double tempcp;
@@ -48,7 +48,10 @@ partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2, int min
 	      k++;
 	    }
 	    //(*ct_eval) (n, ct.ytemp, me->response_est, &(me->risk), ct.wtemp);
-      (*ct_eval) (n, ct.ytemp, me->response_est, &(me->risk), ct.wtemp, ct.trtemp, ct.max_y);
+      if (method == 5)
+        (*ct_eval) (n, ct.ytemp, me->response_est, &(me->risk), ct.wtemp, ct.trtemp, ct.max_y, alpha);
+      else
+        (*ct_eval) (n, ct.ytemp, me->response_est, &(me->risk), ct.wtemp, ct.trtemp, ct.max_y);
 	    me->num_obs = n;
 	    me->sum_wt = twt;
       me->sum_tr = ttr;
@@ -85,7 +88,7 @@ partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2, int min
      * Guess I have to do the split
      */
     //bsplit(me, n1, n2);
-    bsplit(me, n1, n2, min_node_size);
+    bsplit(me, n1, n2, min_node_size, method, alpha);
     if (!me->primary) {
      // Rprintf("stop here!\n");
 	/*
@@ -116,7 +119,7 @@ partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2, int min
     //Rprintf("me->leftson->complexity = %f\n", (me->leftson)->complexity);
     left_split =
 	//partition(2 * nodenum, me->leftson, &left_risk, n1, n1 + nleft);
-    partition(2 * nodenum, me->leftson, &left_risk, n1, n1 + nleft, min_node_size);
+    partition(2 * nodenum, me->leftson, &left_risk, n1, n1 + nleft, min_node_size, method, alpha);
 
     /*
      * Update my estimate of cp, and split the right son.
@@ -136,7 +139,7 @@ partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2, int min
     //right_split = partition(1 + 2 * nodenum, me->rightson, &right_risk,
 		//	    n1 + nleft, n1 + nleft + nright);
     right_split = partition(1 + 2 * nodenum, me->rightson, &right_risk,
-  		    n1 + nleft, n1 + nleft + nright, min_node_size);
+  		    n1 + nleft, n1 + nleft + nright, min_node_size, method, alpha);
 
 
     /*

@@ -15,7 +15,7 @@
 
 void
 //bsplit(pNode me, int n1, int n2)
-bsplit(pNode me, int n1, int n2, int minsize)
+bsplit(pNode me, int n1, int n2, int minsize, int method, double alpha)
 {
 	int i, j, k;
 	int kk;
@@ -66,7 +66,11 @@ bsplit(pNode me, int n1, int n2, int minsize)
 
 		//(*ct_choose) (k, ytemp, xtemp, nc, ct.min_node, &improve,
 		//	      &split, ct.csplit, me->risk, wtemp);
-		(*ct_choose) (k, ytemp, xtemp, nc, ct.min_node, &improve,
+    if (method == 5)
+      (*ct_choose) (k, ytemp, xtemp, nc, ct.min_node, &improve,
+				&split, ct.csplit, me->risk, wtemp, trtemp, minsize, alpha);
+	  else 	
+      (*ct_choose) (k, ytemp, xtemp, nc, ct.min_node, &improve,
 				&split, ct.csplit, me->risk, wtemp, trtemp, minsize);
         
         //Rprintf("%d predictor has improve = %f\n", i, improve);

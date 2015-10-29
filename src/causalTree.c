@@ -5,6 +5,7 @@
  *      ncat    = # categories for each var, 0 for continuous variables.
  *      method  = 1 - anova
  *                2 - exponential survival
+                  3 - anova2
  *		  3 - classification
  *	          4 - user defright_wt_sum / right_wt- (right_sum - right_wt_sum) / (right_n - right_wt);ined callback
  *      opt     = vector of options.  Same order as causalTree.control, as a vector
@@ -40,7 +41,7 @@
 SEXP
 causalTree(SEXP ncat2, SEXP method2, SEXP opt2,
       SEXP parms2, SEXP minsize2, SEXP p2, SEXP xvals2, SEXP xgrp2,
-      SEXP ymat2, SEXP xmat2, SEXP wt2, SEXP treatment2, SEXP ny2, SEXP cost2, SEXP xvar2)
+      SEXP ymat2, SEXP xmat2, SEXP wt2, SEXP treatment2, SEXP ny2, SEXP cost2, SEXP xvar2, SEXP alpha2)
 {
 
     pNode tree;          /* top node of the tree */
@@ -51,6 +52,7 @@ causalTree(SEXP ncat2, SEXP method2, SEXP opt2,
     int *savesort = NULL /* -Wall */ ;
     double *dptr;               /* temp */
     int *iptr;
+    int method;
     /*
      * pointers to R objects
      */
@@ -63,6 +65,7 @@ causalTree(SEXP ncat2, SEXP method2, SEXP opt2,
     int minsize;
     // add propensity score:
     double p;
+    double alpha;
     /*
      * Return objects for R -- end in "3" to avoid overlap with internal names
      */
@@ -86,6 +89,8 @@ causalTree(SEXP ncat2, SEXP method2, SEXP opt2,
     //parms = asInteger(parms2);
     minsize = asInteger(minsize2);
     p = asReal(p2);
+    alpha = asReal(alpha2);
+    method = asInteger(method2);
     
     
     /*
@@ -244,7 +249,10 @@ causalTree(SEXP ncat2, SEXP method2, SEXP opt2,
     // add ct.maxx_y inside the evaluation funciton
     // (*ct_eval) (n, ct.ydata, tree->response_est, &(tree->risk), wt)
     // here I am now >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    (*ct_eval) (n, ct.ydata, tree->response_est, &(tree->risk), wt, treatment, ct.max_y);
+    if (method == 5) // anova2:
+      (*ct_eval) (n, ct.ydata, tree->response_est, &(tree->risk), wt, treatment, ct.max_y, alpha);
+    else 
+      (*ct_eval) (n, ct.ydata, tree->response_est, &(tree->risk), wt, treatment, ct.max_y);
     tree->complexity = tree->risk;
     ct.alpha = ct.complexity * tree->risk;
     // for debug only:
@@ -255,7 +263,7 @@ causalTree(SEXP ncat2, SEXP method2, SEXP opt2,
      * Do the basic tree
      */
     //partition(1, tree, &temp, 0, n);
-    partition(1, tree, &temp, 0, n, minsize);
+    partition(1, tree, &temp, 0, n, minsize, method, alpha);
     
     CpTable cptable = (CpTable) ALLOC(1, sizeof(cpTable));
     cptable->cp = tree->complexity;
@@ -271,7 +279,7 @@ causalTree(SEXP ncat2, SEXP method2, SEXP opt2,
       make_cp_list(tree, tree->complexity, cptable);
 	    make_cp_table(tree, tree->complexity, 0);
 	if (xvals > 1) {
-      xval(xvals, cptable, xgrp, maxcat, &errmsg, parms, minsize, p, savesort);
+      xval(xvals, cptable, xgrp, maxcat, &errmsg, parms, minsize, p, savesort, method, alpha);
 	}
     }
     /*

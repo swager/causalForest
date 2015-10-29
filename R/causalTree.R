@@ -6,8 +6,8 @@
 # TODO: add cv.option in causalTree.R
 causalTree <-
  #   function(formula, data, weights, subset, na.action = na.causalTree, method,
-  function(formula, data, weights, treatment, subset, na.action = na.causalTree, method, 
-           split.option, cv.option, minsize = 2L, model = FALSE, x = FALSE, y = TRUE, parms, p, control, cost, ...) 
+  function(formula, data, weights, treatment, subset, na.action = na.causalTree, method = "anova", 
+           split.option, cv.option, minsize = 2L, model = FALSE, x = FALSE, y = TRUE, parms, p, control, alpha = 0.5, cost, ...) 
     # p := propensity score
     # split.option := CT or TOT, splitting rule
     # cv.option := cross validation option, TOT or matching
@@ -131,9 +131,9 @@ causalTree <-
     	parms <- init$parms
     } else { 
       # not user function
-	    method.int <- pmatch(method, c("anova", "poisson", "class", "exp"))
+	    method.int <- pmatch(method, c("anova", "poisson", "class", "exp", "anova2"))
 	    if (is.na(method.int)) stop("Invalid method")
-	    method <- c("anova", "poisson", "class", "exp")[method.int]
+	    method <- c("anova", "poisson", "class", "exp", "anova2")[method.int]
     	if (method.int == 4L) method.int <- 2L
 
         ## If this function is being retrieved from the causalTree package, then
@@ -231,7 +231,7 @@ causalTree <-
     }
 
     ##
-    ## Incoctorate costs
+    ## Incorprate costs
     ##
     if (missing(cost)) cost <- rep(1, nvar)
     else {
@@ -272,7 +272,8 @@ causalTree <-
                    treatment,
                    as.integer(init$numy),
                    as.double(cost),
-                   as.double(xvar))
+                   as.double(xvar),
+                   as.double(alpha))
 
     nsplit <- nrow(ctfit$isplit) # total number of splits, primary and surrogate
     ## total number of categorical splits
@@ -294,20 +295,20 @@ causalTree <-
     ## Now, make ordered factors look like factors again (a printout choice)
     nadd <- sum(isord[ctfit$isplit[, 1L]])
     if (nadd > 0L) { # number of splits at an ordered factor.
-	newc <- matrix(0L, nadd, max(cats))
-	cvar <- ctfit$isplit[, 1L]
-	indx <- isord[cvar]             # vector of TRUE/FALSE
-	cdir <- splits[indx, 2L]        # which direction splits went
-	ccut <- floor(splits[indx, 4L]) # cut point
-	splits[indx, 2L] <- cats[cvar[indx]] # Now, # of categories instead
-	splits[indx, 4L] <- ncat + 1L:nadd # rows to contain the splits
+      newc <- matrix(0L, nadd, max(cats))
+	    cvar <- ctfit$isplit[, 1L]
+	    indx <- isord[cvar]             # vector of TRUE/FALSE
+	    cdir <- splits[indx, 2L]        # which direction splits went
+	    ccut <- floor(splits[indx, 4L]) # cut point
+	    splits[indx, 2L] <- cats[cvar[indx]] # Now, # of categories instead
+	    splits[indx, 4L] <- ncat + 1L:nadd # rows to contain the splits
 
         ## Next 4 lines can be done without a loop, but become indecipherable
-	for (i in 1L:nadd) {
-	    newc[i, 1L:(cats[(cvar[indx])[i]])] <- -as.integer(cdir[i])
-	    newc[i, 1L:ccut[i]] <- as.integer(cdir[i])
-        }
-	catmat <- if (ncat == 0L) newc
+	    for (i in 1L:nadd) {
+	        newc[i, 1L:(cats[(cvar[indx])[i]])] <- -as.integer(cdir[i])
+	        newc[i, 1L:ccut[i]] <- as.integer(cdir[i])
+          }
+    	catmat <- if (ncat == 0L) newc
         else {
             ## newc may have more cols than existing categorical splits
             ## the documentation says that levels which do no exist are '2'
@@ -317,13 +318,13 @@ causalTree <-
             if (ncs < ncc) cs <- cbind(cs, matrix(0L, nrow(cs), ncc - ncs))
             rbind(cs, newc)
         }
-	ncat <- ncat + nadd
-    } else catmat <- ctfit$csplit
+  	  ncat <- ncat + nadd
+      } else catmat <- ctfit$csplit
 
     ## NB: package adabag depends on 'var' being a factor.
     if (nsplit == 0L) {   
       # tree with no splits
-	frame <- data.frame(row.names = 1L,
+	    frame <- data.frame(row.names = 1L,
 			    var = "<leaf>",
 			    n = ctfit$inode[, 5L],
 			    wt = ctfit$dnode[, 3L],
@@ -333,9 +334,9 @@ causalTree <-
 			    ncompete = 0L,
 			    nsurrogate = 0L)
     } else {
-	temp <- ifelse(index == 0L, 1L, index)
-	svar <- ifelse(index == 0L, 0L, ctfit$isplit[temp, 1L]) # var number
-	frame <- data.frame(row.names = ctfit$inode[, 1L],
+    	temp <- ifelse(index == 0L, 1L, index)
+	    svar <- ifelse(index == 0L, 0L, ctfit$isplit[temp, 1L]) # var number
+	    frame <- data.frame(row.names = ctfit$inode[, 1L],
                             ## maybe better to specify tname as the level?
 			    var = tname[svar + 1L],
 			    n = ctfit$inode[, 5L],
@@ -359,7 +360,7 @@ causalTree <-
         temp <- ctfit$dnode[, 4L + (1L:numclass)] %*% diag(init$parms$prior/temp)
         yprob <- temp /rowSums(temp)    # necessary with altered priors
         yval2 <- matrix(ctfit$dnode[, 4L + (0L:numclass)], ncol = numclass + 1L)
-	frame$yval2 <- cbind(yval2, yprob, nodeprob)
+	      frame$yval2 <- cbind(yval2, yprob, nodeprob)
     } else if (init$numresp > 1L)
         frame$yval2 <- ctfit$dnode[, -(1L:3L), drop = FALSE]
         #print("frame$yval2:")
