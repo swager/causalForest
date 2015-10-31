@@ -2,8 +2,8 @@
 #  The recursive partitioning function, for R
 #
 
-# we need to add propensity score p in causalTree.R
-# we need to add cv.option in causalTree.R
+# TODO: add propensity score p in causalTree.R
+# TODO: add cv.option in causalTree.R
 causalTree <-
  #   function(formula, data, weights, subset, na.action = na.causalTree, method,
   function(formula, data, weights, treatment, subset, na.action = na.causalTree, method, 
@@ -80,7 +80,8 @@ causalTree <-
       formula.right <- formula.elements[2]
       formula.left <- paste(formula.left, "*", "trp")
       myformula <- as.formula(paste(formula.left, "~", formula.right))
-      ## need to deal with subset!!!!!!!!!!!!!!!!!!!!!!!
+
+      ## TODO: deal with subset
       if (missing(subset)) {
         ans <- rpart(formula = myformula, data = data, weights = wt, 
                    na.action = na.rpart, method = method, model = mtemp, x = x, y = y, 

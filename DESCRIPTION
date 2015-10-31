@@ -1,4 +1,4 @@
-Package: causalTree
+Package: causalForest
 Version: 0.9.0
 Date: 2015-11-01
 Authors@R: c(person("Stefan", "Wager", role = c("aut", "cre"),
