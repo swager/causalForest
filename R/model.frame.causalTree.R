@@ -11,7 +11,7 @@ model.frame.causalTree <- function(formula, ...)
         }
         return(m)
     }
-    while(!deparse(oc[[1L]]) %in%  c("causalTree", "causalTree::causalTree", "causalTree:::causalTree"))
+    while(!deparse(oc[[1L]]) %in%  c("causalTree"))
         oc <- eval(oc[[2L]])$call
     oc$subset <- names(formula$where)
     oc$method <- formula$method

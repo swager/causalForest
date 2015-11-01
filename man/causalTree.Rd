@@ -2,13 +2,13 @@
 \alias{causalTree}
 %\alias{causalTreecallback}
 \title{
-  Recursive Partitioning and Regression Trees
+  Estimating heterogeneous treatment effects with trees.
 }
 \description{
-  Fit a \code{causalTree} model
+  Fit a \code{causalTree} model. TODO: update documentation...
 }
 \usage{
-causalTree(formula, data, weights, subset, na.action = na.causalTree, method,
+causalTree(formula, data, weights, treatment, subset, na.action = na.causalTree, method,
       model = FALSE, x = FALSE, y = TRUE, parms, control, cost, \dots)
 }
 \arguments{
@@ -21,6 +21,8 @@ causalTree(formula, data, weights, subset, na.action = na.causalTree, method,
     named in the formula.} 
   
   \item{weights}{optional case weights.}
+
+  \item{treatment}{treatment assignment for each training example.}
   
   \item{subset}{optional expression saying that only a subset of the
     rows of the data should be used in the fit.}
