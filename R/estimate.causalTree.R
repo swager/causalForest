@@ -74,7 +74,7 @@ estimate.leaf.tau <- function(leaf.assignments, treat, control, Y, leaves, leaf)
 ## estimate function for honest causal tree:
 estimate.causalTree <- function(object, formula, data, treatment, na.action = na.pass)
 {
-  if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
+  if (!inherits(object, "causalTree")) stop("Not a legitimate \"causalTree\" object")
   Call <- match.call()
   indx <- match(c("formula", "data", "treatment"),
                 names(Call), nomatch = 0L)

@@ -1,7 +1,7 @@
 plot.causalTree <- function(x, uniform = FALSE, branch = 1, compress = FALSE,
                        nspace, margin = 0, minbranch = 0.3, ...)
 {
-    if (!inherits(x, "rpart")) stop("Not a legitimate \"rpart\" object")
+    if (!inherits(x, "causalTree")) stop("Not a legitimate \"causalTree\" object")
     if (nrow(x$frame) <= 1L) stop("fit is not a tree, just a root")
 
     if (compress & missing(nspace)) nspace <- branch

@@ -8,7 +8,7 @@ text.causalTree <-
              use.n = FALSE, fancy = FALSE, fwidth = 0.8, fheight = 0.8,
              bg = par("bg"), minlength = 1L, ...)
 {
-    if (!inherits(x, "rpart")) stop("Not a legitimate \"rpart\" object")
+    if (!inherits(x, "causalTree")) stop("Not a legitimate \"causalTree\" object")
     if (nrow(x$frame) <= 1L) stop("fit is not a tree, just a root")
 
     frame <- x$frame

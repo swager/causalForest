@@ -1,8 +1,8 @@
 meanvar.causalTree <- function(tree, xlab = "ave(y)", ylab = "ave(deviance)", ...)
 
 {
-    if (!inherits(tree, "rpart"))
-        stop("Not a legitimate \"rpart\" object")
+    if (!inherits(tree, "causalTree"))
+        stop("Not a legitimate \"causalTree\" object")
     if (!tree$method == "anova")
         stop("Plot not useful for classification or poisson trees")
     frame <- tree$frame

@@ -91,6 +91,7 @@ causalTree <-
                      na.action = na.rpart, method = method, model = mtemp, x = x, y = y, 
                      parms = parms, control = control, cost = cost, ...)
       }
+      class(ans) <- "causalTree"
       return (ans)
     }
 
@@ -396,6 +397,6 @@ causalTree <-
     if (!is.null(attr(m, "na.action"))) ans$na.action <- attr(m, "na.action")
     if (!is.null(xlevels)) attr(ans, "xlevels") <- xlevels
     if (method == "class") attr(ans, "ylevels") <- init$ylevels
-    class(ans) <- "rpart"
+    class(ans) <- "causalTree"
     ans
 }

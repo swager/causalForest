@@ -2,8 +2,8 @@
 
 path.causalTree <- function(tree, nodes, pretty = 0, print.it = TRUE)
 {
-    if (!inherits(tree, "rpart"))
-        stop("Not a legitimate \"rpart\" object")
+    if (!inherits(tree, "causalTree"))
+        stop("Not a legitimate \"causalTree\" object")
     splits <- labels.causalTree(tree, pretty = pretty)
     frame <- tree$frame
     n <- row.names(frame)

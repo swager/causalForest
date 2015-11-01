@@ -9,3 +9,10 @@ ct = causalTree(Y ~ X, treatment=W, split.option="CT", cv.option="TOT")
 summary(ct)
 min(predict(ct))
 max(predict(ct))
+class(ct) == "causalTree"
+
+ct = causalTree(Y ~ X, treatment=W, split.option="TOT", cv.option="TOT")
+summary(ct)
+min(predict(ct))
+max(predict(ct))
+class(ct) == "causalTree"

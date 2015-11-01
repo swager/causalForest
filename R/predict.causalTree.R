@@ -2,7 +2,7 @@ predict.causalTree <- function(object, newdata,
 	 type = c("vector", "prob", "class", "matrix"),
          na.action = na.pass, ...)
 {
-    if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
+    if (!inherits(object, "causalTree")) stop("Not a legitimate \"causalTree\" object")
     mtype <- missing(type)
     type <- match.arg(type)
     where <- if (missing(newdata)) object$where
@@ -34,7 +34,7 @@ predict.causalTree <- function(object, newdata,
     } else if (type == "prob" && nclass > 0L) {
 	pred <- frame$yval2[where, 1L + nclass + 1L:nclass, drop = FALSE]
 	dimnames(pred) <- list(names(where), ylevels)
-    } else stop("Invalid prediction for \"rpart\" object")
+    } else stop("Invalid prediction for \"causalTree\" object")
 
     # Expand out the missing values in the result
     # But only if operating on the original dataset

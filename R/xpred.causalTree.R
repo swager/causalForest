@@ -4,7 +4,7 @@
 ## revised version of xpred.R 08.29.2015
 xpred.causalTree <- function(fit, xval = 10L, cp, return.all = FALSE)
 {
-    if (!inherits(fit, "rpart")) stop("Invalid fit object")
+    if (!inherits(fit, "causalTree")) stop("Invalid fit object")
 
     method <- fit$method
     method.int <- pmatch(method, c("anova", "poisson", "class", "user", "exp"))

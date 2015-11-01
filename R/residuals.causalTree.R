@@ -1,8 +1,8 @@
 residuals.causalTree <-
     function(object, type = c("usual", "pearson", "deviance"), ...)
 {
-    if (!inherits(object, "rpart"))
-        stop("Not a legitimate \"rpart\" object")
+    if (!inherits(object, "causalTree"))
+        stop("Not a legitimate \"causalTree\" object")
 
     y <- object$y
     if (is.null(y)) y <- model.extract(model.frame(object), "response")
