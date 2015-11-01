@@ -17,5 +17,12 @@ min(predict(ct))
 max(predict(ct))
 class(ct) == "causalTree"
 
-cf = causalForest(X, Y, W)
+cf = causalForest(X, Y, W, num.trees = 10)
+min(predict(cf, X))
+max(predict(cf, X))
+class(cf) == "causalForest"
 
+pf = propensityForest(X, Y, W, num.trees = 10)
+min(predict(pf, X))
+max(predict(pf, X))
+class(pf) == "causalForest"

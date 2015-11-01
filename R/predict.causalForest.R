@@ -7,7 +7,7 @@
 #' @return estimates for tau, corresponding to each row of newdata
 
 predict.causalForest <- function(forest, newdata, predict.all = FALSE) {
-  if (!inherits(object, "causalForest")) stop("Not a legitimate \"causalForest\" object")  
+  if (!inherits(forest, "causalForest")) stop("Not a legitimate \"causalForest\" object")  
   test.data <- data.frame(X=newdata)
   individual <- sapply(forest$trees, function(tree.fit) {
   	predict(tree.fit, test.data)
