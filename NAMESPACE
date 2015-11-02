@@ -1,4 +1,4 @@
-useDynLib(causalTree, .registration = TRUE, .fixes = "C_")
+useDynLib(causalForest, .registration = TRUE, .fixes = "C_")
 
 export(na.causalTree, path.causalTree, prune.causalTree, causalTree, causalTree.control, snip.causalTree, xpred.causalTree, 
        estimate.causalTree, causalForest, propensityForest)
