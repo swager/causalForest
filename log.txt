@@ -1,0 +1,6 @@
+This version is for simulations in the paper, including:
+
+ST (single tree):
+TT (two trees):
+TOT (transformed outcome tree):
+CT (causal tree with “matching” as cross validation):

@@ -8,7 +8,7 @@
 pNode branch(pNode tree, int obs);
 
 //void bsplit(pNode me, int n1, int n2);
-void bsplit(pNode me, int n1, int n2, int minsize);
+void bsplit(pNode me, int n1, int n2, int minsize, int method, double alpha);
 
 void choose_surg(int n1, int n2, int *y, double *x, int *order,
 		 int ncat, double *agreement, double *split, int *csplit,
@@ -34,14 +34,14 @@ void mysort(int start, int stop, double *x, int *cvec);
 void nodesplit(pNode me, int nodenum, int n1, int n2, int *nleft, int *nright);
 
 //int partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2);
-int partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2, int minsize);
+int partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2, int minsize, int method, double alpha);
 
 int print_tree(pNode me, int maxdepth);
 
 //SEXP causalTree(SEXP ncat2, SEXP method2, SEXP opt2, SEXP parms2, SEXP ymat2,
 //	   SEXP xmat2, SEXP xvals2, SEXP xgrp2, SEXP wt2, SEXP ny2, SEXP cost2);
 SEXP causalTree(SEXP ncat2, SEXP method2, SEXP opt2, SEXP parms2, SEXP minsize2, SEXP p2, SEXP ymat2,
-     SEXP xmat2, SEXP xvals2, SEXP xgrp2, SEXP wt2, SEXP treatment2, SEXP ny2, SEXP cost2, SEXP xvar2);
+     SEXP xmat2, SEXP xvals2, SEXP xgrp2, SEXP wt2, SEXP treatment2, SEXP ny2, SEXP cost2, SEXP xvar2, SEXP alpha2);
 
 void causalTree_callback0(int *nr);
 void causalTree_callback1(int n, double *y[], double *wt, double *z);
@@ -63,13 +63,13 @@ void surrogate(pNode me, int n1, int n2);
 
 SEXP xpred(SEXP ncat2, SEXP method2, SEXP opt2, SEXP parms2, SEXP minsize2, SEXP xvals2,
 	   SEXP xgrp2, SEXP ymat2, SEXP xmat2, SEXP wt2, SEXP treatment2, SEXP ny2,
-	   SEXP cost2, SEXP all2, SEXP cp2, SEXP toprisk2, SEXP nresp2);
+	   SEXP cost2, SEXP all2, SEXP cp2, SEXP toprisk2, SEXP nresp2, SEXP alpha2);
 
 //void xval(int n_xval, CpTable cptable_head, int *x_gct, int maxcat,
 //	  char **error, double *parms, int *savesort);
 
 void xval(int n_xval, CpTable cptable_head, int *x_grp, int maxcat,
-    char **error, double *parms, int minsize, double p, int *savesort);
+    char **error, double *parms, int minsize, double p, int *savesort, int method, double alpha);
 
 int findNeighbor(int obs, int k);
 double measureDistance(int i, int j);

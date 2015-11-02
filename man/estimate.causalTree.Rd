@@ -10,8 +10,7 @@ estimate.causalTree(object, formula, data, weights, na.action = na.pass)
 \item{object}{A tree-structured fit object.}
 
 \item{formula}{A regression formula.}
-
-\item{data}{New observations.}
+\item{data}{New data frame in which to interact the variables named in the formula.}
 
 \item{weights}{The treatment status of new observations}
 }
@@ -23,3 +22,14 @@ Notice here when the leaf contains only treated or control cases, the function w
 Estimate the causal effects using honest tree model.
 }
 
+\examples{
+fit <- causalTree(y ~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10, 
+data = simulation.1, treatment = simulation.1$treatment, split.option = "CT", 
+cv.option = "matching", cp = 0, minsize = 5, minbucket = 5)
+
+opcp <- fit$cptable[,1][which.min(fit$cptable[,4])]
+
+opfit <- prune(fit, opcp)
+
+estimation <- estimate.causalTree(opfit, data = simulation.2, treatment = simulation.2$treatment)
+}

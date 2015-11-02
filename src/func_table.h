@@ -9,8 +9,9 @@
  *  error        - Function that returns the prediction error.
  *  num_y        - Number of columns needed to represent y (usually 1)
  */
-
 extern int anovainit(int n, double *y[], int maxcat, char **error,
+  	     double *parm, int *size, int who, double *wt, double *treatment);
+extern int anovainit2(int n, double *y[], int maxcat, char **error,
 		     double *parm, int *size, int who, double *wt, double *treatment);
 extern int poissoninit(int n, double *y[], int maxcat, char **error,
 		       double *parm, int *size, int who, double *wt);
@@ -20,7 +21,9 @@ extern int usersplit_init(int n, double *y[], int maxcat, char **error,
 			  double *parm, int *size, int who, double *wt);
 
 extern void anovass(int n, double *y[], double *value, double *risk,
-		    double *wt, double *treatment, double max_y);
+  	    double *wt, double *treatment, double max_y);
+extern void anovass2(int n, double *y[], double *value, double *risk,
+		    double *wt, double *treatment, double max_y, double alpha);
 extern void poissondev(int n, double *y[], double *value, double *risk,
 		       double *wt);
 extern void ginidev(int n, double *y[], double *value, double *risk,
@@ -29,8 +32,11 @@ extern void usersplit_eval(int n, double *y[], double *value, double *risk,
 			   double *wt);
 
 extern void anova(int n, double *y[], double *x, int nclass,
-		  int edge, double *improve, double *split, int *csplit,
+  	  int edge, double *improve, double *split, int *csplit,
 		  double myrisk, double *wt, double *treatment, int minsize);
+extern void anova2(int n, double *y[], double *x, int nclass,
+		  int edge, double *improve, double *split, int *csplit,
+		  double myrisk, double *wt, double *treatment, int minsize, double alpha);
 extern void poisson(int n, double *y[], double *x, int nclass,
 		    int edge, double *improve, double *split, int *csplit,
 		    double myrisk, double *wt);
@@ -55,7 +61,8 @@ static struct {
     {anovainit, anova, anovass, anovapred},
     {poissoninit, poisson, poissondev, poissonpred},
     {giniinit, gini, ginidev, ginipred},
-    {usersplit_init, usersplit, usersplit_eval, usersplit_pred}
+    {usersplit_init, usersplit, usersplit_eval, usersplit_pred},
+    {anovainit2, anova2, anovass2, anovapred}
 };
 
-#define NUM_METHODS 4           /* size of the above structure */
+#define NUM_METHODS 5           /* size of the above structure */

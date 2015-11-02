@@ -34,7 +34,7 @@ SEXP
 xpred(SEXP ncat2, SEXP method2, SEXP opt2,
       SEXP parms2, SEXP minsize2, SEXP xvals2, SEXP xgrp2,
       SEXP ymat2, SEXP xmat2, SEXP wt2, SEXP treatment2,
-      SEXP ny2, SEXP cost2, SEXP all2, SEXP cp2, SEXP toprisk2, SEXP nresp2)
+      SEXP ny2, SEXP cost2, SEXP all2, SEXP cp2, SEXP toprisk2, SEXP nresp2, SEXP alpha2)
 {
     char *errmsg;
     int i, j, k, n;
@@ -60,6 +60,8 @@ xpred(SEXP ncat2, SEXP method2, SEXP opt2,
     int minsize;
     double *predict;
     double *cp;
+    double alpha = asReal(alpha2);
+    int method = asInteger(method2);
     
 
     /*
@@ -204,6 +206,7 @@ xpred(SEXP ncat2, SEXP method2, SEXP opt2,
 
     ct.which = (int *) ALLOC(n, sizeof(int));
     xtree = (pNode) ALLOC(1, nodesize);
+    
     (*ct_init) (n, ct.ydata, maxcat, &errmsg, parms, &ct.num_resp, 1, wt, treatment);
 
     /*
@@ -297,10 +300,13 @@ xpred(SEXP ncat2, SEXP method2, SEXP opt2,
 	    xtree->num_obs = k;
 	    (*ct_init) (k, ct.ytemp, maxcat, &errmsg, parms, &ii, 2, ct.wtemp, ct.trtemp);
 	    //(*ct_eval) (k, ct.ytemp, xtree->response_est, &(xtree->risk), ct.wtemp);
-      (*ct_eval) (k, ct.ytemp, xtree->response_est, &(xtree->risk), ct.wtemp, ct.trtemp, ct.max_y);
+      if (method == 5)
+        (*ct_eval) (k, ct.ytemp, xtree->response_est, &(xtree->risk), ct.wtemp, ct.trtemp, ct.max_y, alpha);
+      else
+        (*ct_eval) (k, ct.ytemp, xtree->response_est, &(xtree->risk), ct.wtemp, ct.trtemp, ct.max_y);
 	    xtree->complexity = xtree->risk;
 	    //partition(1, xtree, &temp, 0, k);
-      partition(1, xtree, &temp, 0, k, minsize);
+      partition(1, xtree, &temp, 0, k, minsize, method, alpha);
 	    fix_cp(xtree, xtree->complexity);
      // Rprintf("%d th xtree\n", xgroup + 1);
 	   // print_tree(xtree, 5);        /* debug line */

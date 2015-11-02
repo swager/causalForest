@@ -16,7 +16,7 @@ static int debug = 0;
 //xval(int n_xval, CpTable cptable_head, int *x_grp,
 //		int maxcat, char **errmsg, double *parms, int *savesort)
 xval(int n_xval, CpTable cptable_head, int *x_grp,
-   	int maxcat, char **errmsg, double *parms, int minsize, double p, int *savesort)
+   	int maxcat, char **errmsg, double *parms, int minsize, double p, int *savesort, int method, double alpha)
 {
 	int i, j, k, ii, jj;
 	int last;
@@ -138,12 +138,15 @@ xval(int n_xval, CpTable cptable_head, int *x_grp,
 		xtree->num_obs = k;
 		(*ct_init) (k, ct.ytemp, maxcat, errmsg, parms, &temp, 2, ct.wtemp, ct.trtemp);
 		//(*ct_eval) (k, ct.ytemp, xtree->response_est, &(xtree->risk), ct.wtemp);
-    (*ct_eval) (k, ct.ytemp, xtree->response_est, &(xtree->risk), ct.wtemp, ct.trtemp, ct.max_y);
+    if (method ==5)
+      (*ct_eval) (k, ct.ytemp, xtree->response_est, &(xtree->risk), ct.wtemp, ct.trtemp, ct.max_y, alpha);
+    else 
+      (*ct_eval) (k, ct.ytemp, xtree->response_est, &(xtree->risk), ct.wtemp, ct.trtemp, ct.max_y);
 		xtree->complexity = xtree->risk;
     //Rprintf("xtree->complexity = %f\n", xtree->complexity);
 		//partition(1, xtree, &temp, 0, k);
 
-    partition(1, xtree, &temp, 0, k, minsize);
+    partition(1, xtree, &temp, 0, k, minsize, method, alpha);
     
     //Rprintf("now, xtree->complexity = %f\n", xtree->complexity);
 		//the complexity should be min(me, any-node-above-me). This routine fixes that.
