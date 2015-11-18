@@ -1,8 +1,11 @@
 #### honest model for ST, TT, TOT and CT:
 # honest ST model 
-honestST <- function(object, data, na.action = na.rpart) {
-  if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
+honestSTtmp <- function(object, data, na.action = na.rpart) {
+  print("intmp")
+  #if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
   
+  if (!("treatment" %in% names(data))) stop("No vector named 'treatment' in dataset")
+
   nodes <- as.numeric(row.names(object$frame))
   num <- length(nodes)
   Terms <- object$terms
@@ -85,10 +88,13 @@ honestST <- function(object, data, na.action = na.rpart) {
 
 
 # consider honest tree for TOT:
-honestTOT <- function(object, data, treatment, p = 0.5, na.action = na.rpart) {
+honestTOTtmp <- function(object, data, treatment, p = 0.5, na.action = na.rpart) {
   # p is the propensity socre:
-  if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
-  
+  #if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
+  print("intmp")
+
+  if (!("treatment" %in% names(data))) stop("No vector named 'treatment' in dataset")
+
   nodes <- as.numeric(row.names(object$frame))
   num <- length(nodes)
   Terms <- object$terms
@@ -176,9 +182,12 @@ honestTOT <- function(object, data, treatment, p = 0.5, na.action = na.rpart) {
 
 
 ## honest causal tree models:
-honestCTree <- function(object, data, treatment, na.action = na.rpart) {
-  if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
-  
+honestCTreetmp <- function(object, data, treatment, na.action = na.rpart) {
+  print("intmp")
+
+  #if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
+  if (!("treatment" %in% names(data))) stop("No vector named 'treatment' in dataset")
+
   nodes <- as.numeric(row.names(object$frame))
   num <- length(nodes)
   Terms <- object$terms

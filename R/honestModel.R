@@ -1,7 +1,9 @@
 #### honest model for ST, TT, TOT and CT:
 # honest ST model 
 honestST <- function(object, data, na.action = na.rpart) {
-  if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
+  #if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
+  
+  if (!("treatment" %in% names(data))) stop("Function requires treatment column to be named 'treatment' in dataframe")
   
   nodes <- as.numeric(row.names(object$frame))
   num <- length(nodes)
@@ -87,7 +89,9 @@ honestST <- function(object, data, na.action = na.rpart) {
 # consider honest tree for TOT:
 honestTOT <- function(object, data, treatment, p = 0.5, na.action = na.causalTree) {
   # p is the propensity socre:
-  if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
+  #if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
+  
+  if (!("treatment" %in% names(data))) stop("Function requires treatment column to be named 'treatment' in dataframe")
   
   nodes <- as.numeric(row.names(object$frame))
   num <- length(nodes)
@@ -171,7 +175,8 @@ honestTOT <- function(object, data, treatment, p = 0.5, na.action = na.causalTre
 
 ## honest causal tree models:
 honestCTree <- function(object, data, treatment, na.action = na.causalTree) {
-  if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
+  #if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
+  if (!("treatment" %in% names(data))) stop("Function requires treatment column to be named 'treatment' in dataframe")
   
   nodes <- as.numeric(row.names(object$frame))
   num <- length(nodes)
