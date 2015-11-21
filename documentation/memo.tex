@@ -256,7 +256,7 @@ control=rpart.control(cp = 0, xval = 10), parms = 1,minsize = 10,  cv.option = "
 The causal tree partitions the data into subgroups, in the form of a hierachical tree structure, and estimates a treatment effect for each of these subgroups. 
 These subgroups are the leaves of the trees, or the nodes at the bottom which have no children. We can view the estimates within these nodes by plotting, but we can also use the method used in the example code. This method is helpful because it allows us to view the standard errors. 
 
-After creating the tree, we can do estimates on our training and test datasets. Below is an example of first the model applied to the training sample, and then to the test sample. The important results are the coefficients in which  the leaf is interacting with the treatment. These rows give us the treatment effect (in column "Estimate") and the standard error for those estimates (in column "Std. Error"). Note that for the training sample, the model applied to the training data, the treatment effect in for the given leaf, corresponds to the name of the leaf. This is because the estimates for the training dataset are exact. This is a good check to make sure that everything is working properly. 
+After creating the tree, we can do estimates on our A and B sets. Below is an example of first the model applied to the training sample, and then to the B (leaf estimating) sample. The important results are the coefficients in which  the leaf is interacting with the treatment. These rows give us the treatment effect (in column "Estimate") and the standard error for those estimates (in column "Std. Error"). Note that for the training sample, the model applied to the training data, the treatment effect in for the given leaf, corresponds to the name of the leaf. This is because the estimates for the training dataset are exact. This is a good check to make sure that everything is working properly. 
 
 \begin{verbatim}
 Call:
@@ -312,7 +312,7 @@ Multiple R-squared:  0.8624,	Adjusted R-squared:  0.8517
 F-statistic: 80.75 on 36 and 464 DF,  p-value: < 2.2e-16
 \end{verbatim}
 
-And, the test dataset. 
+And, the B dataset
 
 \begin{verbatim}
 Call:
