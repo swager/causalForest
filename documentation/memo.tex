@@ -61,6 +61,10 @@ The files come in a common format for binary installation (e.g., exe, dmg, deb, 
 
 
 \section{Installing Packages}
+The following sections will describe how to install R packages to after RStudio is set up. You need only install the packages once, after which you can comment out these lines in your script. Each time you open RStudio again, you will simply need to load the libraries you have installed, using library(\textless package name\textgreater).
+
+\textbf{A note for troubleshooting:} Sometimes you may encounter errors in installing packages that do not repeat if you simply restart R and try again.  This can happen if there are errors in downloading files, or other undetermined reasons.  A first fix, if you run into errors when executing the following steps, is to simply restart R and rerun. Another potential fix is to remove the package using remove.packages("\textless package name\textgreater") and then reinstall using the installation instructions below.
+
 \subsection{Installing Basic R Packages}
 To install basic R Packages, first open RStudio. 
 This can either be done in your command line, or at the top of the script you are executing. 
@@ -93,6 +97,9 @@ It's a bit of a pain having to type /data/Rpackages/ all the time. To avoid this
 > install.packages("ggplot2")
 > library(ggplot2)
 \end{lstlisting}
+should now work!
+
+However, some versions of Windows may complain if you try to create a file name ?.Renviron?.  A workaround is to create the file in notepad, save it in your Documents folder, and then open the windows command prompt (windows key-x) and rename the file from the command prompt, e.g. ?Copy .Renviron.txt .Renviron?.
 
 
 \subsection{Installing Packages from Github}
