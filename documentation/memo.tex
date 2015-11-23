@@ -114,10 +114,11 @@ install_github("swager/randomForestCI""
 
 
 \subsubsection{Installing Private Packages from Github}
-For private packages, you will need to create a github account here:
-and follow these instructions in order to create a Personal Access Token: \url{https://help.github.com/articles/creating-an-access-token-for-command-line-use/}. \\ This token will allow you to identify yourself without putting your github password in your code. Then, you will need to email us with your github username, to request access to the private github, before your access token will work.
+For private packages, you will need to create a github account here: \url{https://github.com/join}
+and follow these instructions in order to generate your own Personal Access Token: \url{https://help.github.com/articles/creating-an-access-token-for-command-line-use/}. \\ This token will allow you to identify yourself without putting your github password in your code. Then, you will need to email us with your github username, to request access to the private github, before your access token will work. 
 
-If you are interested in installing a particular branch of the repository. Otherwise, install\_github defaults to master. 
+If you are interested in installing a particular branch of the repository, you can add this as the ref parameter in the install github function. Otherwise, install\_github defaults to master. 
+
 \begin{lstlisting}[language=R]
 install_github("swager/causalForest", 
            auth_token = "11961a96f08678d7fb8850efd691e3fb5dca2d700") 
@@ -127,6 +128,13 @@ install_github("swager/causalForest", ref="master2",
 \end{lstlisting}
 
 
+As done above, you will need to add your personal authentication token in quotes in the install\_github command.
+
+\begin{lstlisting}[language=R]
+Example:
+install_github("swager/causalForest", 
+           auth_token = "<insert your personal authentication token here>") 
+\end{lstlisting}
 
 
 

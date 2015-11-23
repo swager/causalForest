@@ -13,7 +13,7 @@ library(rpart.plot)
 #again, these can be commented out once they have been run once
 install_github("swager/randomForest")
 install_github("swager/randomForestCI")
-install_github("swager/causalForest", auth_token = "insert your personal authentication token here")
+install_github("swager/causalForest", auth_token = "<insert your personal authentication token here>")
 install.packages("rattle", dependencies=TRUE,repos='http://cran.us.r-project.org')
 install.packages("knitr", dependencies=TRUE,repos='http://cran.us.r-project.org')
 install.packages("ggplot2", dependencies=TRUE, repos='http://cran.us.r-project.org')
