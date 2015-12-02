@@ -20,7 +20,7 @@ causalForest <- function(X, Y, W, num.trees, sample.size = floor(length(Y) / 10)
     
     tree.standard <- causalTree(Y ~ ., data = data.frame(X = X[train.idx,], Y = Y[train.idx]), treatment = W[train.idx], method = "anova", cp = 0, minbucket = nodesize, cv.option = "matching", split.option = "CT", xval = 0)
     
-    tree.honest <- reestimate.tau(tree.standard, Y[reestimation.idx], data.frame(X = X[reestimation.idx,]), W[reestimation.idx])
+    tree.honest <- refit.causalTree(tree.standard, treatment=W[reestimation.idx], newdata=data.frame(X = X[reestimation.idx,], Y = Y[reestimation.idx]))
     
     causalForest.honest$trees[[tree.index]] <- tree.honest
     causalForest.honest$inbag[full.idx, tree.index] <- 1

@@ -93,30 +93,30 @@ refit.causalTree <- function(object, newdata, treatment, na.action = na.causalTr
   }
   
   # now look for the na values and repalce them with parent values:
-  na_causal_indx = which(is.na(causal_effect))
-  if (length(na_causal_indx) > 0) {
+  na_causal_index = which(is.na(causal_effect))
+  if (length(na_causal_index) > 0) {
     for (i in 1:length(na_causal_index)) {
-      tmp = na_causal_indx[i]
+      tmp = na_causal_index[i]
       node_idx = nodes[tmp]
       while (is.na(causal_effect[tmp])) {
         node_idx = floor(node_idx /2)
         tmp = which(nodes == node_idx)
       }
-      causal_effect[na_causal_indx[i]] = causal_effect[tmp]
+      causal_effect[na_causal_index[i]] = causal_effect[tmp]
     }
   }
   
   # similar for deviance:
-  na_dev_indx = which(is.na(deviance))
-  if (length(na_dev_indx) < 0) {
-    for (i in 1:length(na_dev_indx)) {
-      tmp = na_dev_indx[i]
+  na_dev_index = which(is.na(deviance))
+  if (length(na_dev_index) < 0) {
+    for (i in 1:length(na_dev_index)) {
+      tmp = na_dev_index[i]
       node_idx = nodes[tmp]
       while (is.na(deviance[tmp])) {
         node_idx = floor(node_idx /2)
         tmp = which(nodes == node_idx)
       }
-      deviance[na_dev_indx[i]] = deviance[tmp]    
+      deviance[na_dev_index[i]] = deviance[tmp]    
     }
   }
   
