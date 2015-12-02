@@ -1,10 +1,10 @@
 useDynLib(causalForest, .registration = TRUE, .fixes = "C_")
 
 export(na.causalTree, path.causalTree, prune.causalTree, causalTree, causalTree.control, snip.causalTree, xpred.causalTree, 
-       estimate.causalTree, causalForest, propensityForest)
+       estimate.causalTree, refit.causalTree, causalForest, propensityForest)
 export(causalTree.exp)  # needed for one of the tests
 export(honestST, honestTOT, honestCTree)
-export(causalTree.matrix, create.data.frame, recursive.which.in.leaf, est.causalTree) # needed for the simulations
+export(causalTree.matrix, recursive.which.in.leaf, est.causalTree) # needed for the simulations
 
 importFrom(grDevices, dev.cur, dev.off)
 importFrom(graphics, plot, text)
