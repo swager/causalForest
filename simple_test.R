@@ -15,7 +15,7 @@ min(predict(ct))
 max(predict(ct))
 class(ct) == "causalTree"
 
-rct = refit.causalTree(ct, newdata=DF, treatment=W, propensity=rep(0.5, n))
+rct = refit.causalTree(ct, newx=DF, newy=Y, treatment=W, propensity=rep(0.5, n))
 min(predict(rct))
 max(predict(rct))
 class(rct) == "causalTree"
@@ -26,7 +26,7 @@ min(predict(ct))
 max(predict(ct))
 class(ct) == "causalTree"
 
-rct = refit.causalTree(ct, newdata=DF, treatment=W)
+rct = refit.causalTree(ct, newx=DF, newy=Y, treatment=W)
 min(predict(rct))
 max(predict(rct))
 class(rct) == "causalTree"

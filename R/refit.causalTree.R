@@ -1,18 +1,19 @@
 # Refit causal tree; used for getting honest trees
 #
 # object: the original causalTree object
-# newdata: the fresh training data, for honest estimation
-# treatment: treatment assignments
+# newx: the fresh training data features, for honest estimation
+# newy: outcomes for new data
+# treatment: treatment assignments for new data
 # propensity: If NULL, we estimate a CT. If provided, estimate a TOT.
 
-refit.causalTree <- function(object, newdata, treatment, na.action = na.causalTree, propensity = NULL) {
+refit.causalTree <- function(object, newx, newy, treatment, na.action = na.causalTree, propensity = NULL) {
 
   if (!inherits(object, "causalTree")) stop("Not a legitimate \"causalTree\" object")
   
   mode = "CT"
   if(!is.null(propensity)) {
   	mode = "TOT"
-  	if(min(propensity) < 0 | max(propensity) > 1 | length(propensity) != nrow(newdata)) {
+  	if(min(propensity) < 0 | max(propensity) > 1 | length(propensity) != nrow(newx)) {
   		stop("Invalid propensities")
   	}
   }
@@ -21,16 +22,16 @@ refit.causalTree <- function(object, newdata, treatment, na.action = na.causalTr
   num <- length(nodes)
   
   Terms <- object$terms
-  data <- model.frame(Terms, newdata, na.action = na.action, xlev = attr(object, "xlevels"))
+  data <- model.frame(Terms, newx, na.action = na.action, xlev = attr(object, "xlevels"))
   if (!is.null(cl <- attr(Terms, "dataClasses"))) {
-    .checkMFClasses(cl, newdata, TRUE)
+    .checkMFClasses(cl, newx, TRUE)
   }
   
   where <- est.causalTree(object, causalTree.matrix(data))
   
   if (mode == "CT") {
     
-    Y <- model.response(data)
+    Y <- newy
     
     ## begin to compute the yval and dev:
     # initialize:
@@ -43,7 +44,7 @@ refit.causalTree <- function(object, newdata, treatment, na.action = na.causalTr
     count0 <- rep(0, num)
     
     # for loop to insert values:
-    for (i in 1:nrow(newdata)) {
+    for (i in 1:nrow(newx)) {
       node_id <- where[i]
       while (node_id > 0) {
         index <- which(nodes == node_id)
@@ -67,7 +68,7 @@ refit.causalTree <- function(object, newdata, treatment, na.action = na.causalTr
     
   } else if (mode == "TOT") {
   	
-  	Y <- model.response(data) / ( p - 1 + treatment)
+  	Y <- newy / ( p - 1 + treatment)
    
     yval <- rep(NA, num)
     dev <- rep(NA, num)

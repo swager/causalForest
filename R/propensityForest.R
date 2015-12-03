@@ -23,13 +23,17 @@ propensityForest <- function(X, Y, W, num.trees, sample.size = floor(length(Y) /
     #
     # Ideally, we would add an option "split = propensity" to the causalTree call;
     # for now, we just get the splits from rpart.
-    tree.propensity <- rpart(W ~ ., data = data.frame(X = X[full.idx,], W = W[full.idx]), method = "class", minbucket = nodesize)
+    
+    
+    tree.DF = data.frame(X = X, W = W)
+    
+    tree.propensity <- rpart(W ~ ., data = tree.DF[full.idx,], method = "class", minbucket = nodesize)
     class(tree.propensity) <- "causalTree"
     
     # This is a horrible hack to make predict.causalTree do the right thing. Sorry.
     attr(tree.propensity, "ylevels") = NULL
     
-    tree.honest <- reestimate.tau(tree.propensity, Y[full.idx], data.frame(X = X[full.idx,]), W[full.idx])
+    tree.honest <- refit.causalTree(tree.propensity, newx = tree.DF[full.idx,], newy = Y[full.idx], treatment = W[full.idx])
     
     causalForest.honest$trees[[tree.index]] <- tree.honest
     causalForest.honest$inbag[full.idx, tree.index] <- 1
