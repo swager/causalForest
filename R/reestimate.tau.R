@@ -1,6 +1,9 @@
 # Reestimate the output at each leaf using the Y of a new set of observations.
 
 reestimate.tau <- function(fit, Y, X, W) {
+	
+  warning( "The function reestimate.tau is deprecated, and will be removed. Please use refit.causalTree instead." )
+	
   where <- est.causalTree(fit, causalTree.matrix(create.data.frame(fit, X)))
   unique.leaves <- unique(where)
   treat <- which(W == 1)
