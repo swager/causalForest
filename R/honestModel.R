@@ -1,6 +1,9 @@
 #### honest model for ST, TT, TOT and CT:
 # honest ST model 
 honestST <- function(object, data, na.action = na.rpart) {
+
+  warning( "The function honestST is deprecated, and will be removed. Please use refit.causalTree instead." )
+
   #if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
   
   if (!("treatment" %in% names(data))) stop("Function requires treatment column to be named 'treatment' in dataframe")
@@ -88,6 +91,9 @@ honestST <- function(object, data, na.action = na.rpart) {
 
 # consider honest tree for TOT:
 honestTOT <- function(object, data, treatment, p = 0.5, na.action = na.causalTree) {
+
+  warning( "The function honestTOT is deprecated, and will be removed. Please use refit.causalTree instead." )
+
   # p is the propensity socre:
   #if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
   
@@ -175,6 +181,9 @@ honestTOT <- function(object, data, treatment, p = 0.5, na.action = na.causalTre
 
 ## honest causal tree models:
 honestCTree <- function(object, data, treatment, na.action = na.causalTree) {
+
+  warning( "The function honestCTree is deprecated, and will be removed. Please use refit.causalTree instead." )
+
   #if (!inherits(object, "rpart")) stop("Not a legitimate \"rpart\" object")
   if (!("treatment" %in% names(data))) stop("Function requires treatment column to be named 'treatment' in dataframe")
   
