@@ -31,12 +31,12 @@ min(predict(rct))
 max(predict(rct))
 class(rct) == "causalTree"
 
-cf = causalForest(X, Y, W, num.trees = 10)
-min(predict(cf, X))
-max(predict(cf, X))
+cf = causalForest(DF[,1:p], DF$Y, W, num.trees = 10)
+min(predict(cf, data.frame(X=X)))
+max(predict(cf, data.frame(X=X)))
 class(cf) == "causalForest"
 
-pf = propensityForest(X, Y, W, num.trees = 10)
-min(predict(pf, X))
-max(predict(pf, X))
+pf = propensityForest(DF[,1:p], DF$Y, W, num.trees = 10)
+min(predict(pf, data.frame(X=X)))
+max(predict(pf, data.frame(X=X)))
 class(pf) == "causalForest"
