@@ -13,7 +13,7 @@ library(rpart.plot)
 #again, these can be commented out once they have been run once
 install_github("swager/randomForest")
 install_github("swager/randomForestCI")
-install_github("swager/causalForest", auth_token = "<insert your personal authentication token here>")
+install_github("swager/causalForest", auth_token = "<insert your authentication token here")
 install.packages("rattle", dependencies=TRUE,repos='http://cran.us.r-project.org')
 install.packages("knitr", dependencies=TRUE,repos='http://cran.us.r-project.org')
 install.packages("ggplot2", dependencies=TRUE, repos='http://cran.us.r-project.org')
@@ -25,7 +25,7 @@ library(rattle)
 library(causalForest)
 library(ggplot2)
 
-#generating a sample dataset to on which to demonstrate functions.. ignore up to line 
+#generating a sample dataset to on which to demonstrate functions.. ignore up to line 111
 #number of observations
 NUM=500
 #number of variables
@@ -144,14 +144,17 @@ linear.tree<-rpart(linear, data=A, method = "anova", control=rpart.control(cp = 
 
 #we now use the B sample, to do leaf estimation and build an honest tree
 #can then view the subgroups, and/or predict on the test dataset C with 
-#these trees
-honestCTree<-honestCTree(object=linear.caustree, data=B, treatment=B$treatment)
-honestCTree
-honestST<-honestST(object=linear.tree, data=B)
-honestST
-honestTOT<-honestTOT(object=linear.caustree, data=B, treatment=B$treatment)
+#the honest model functions have been deprecated, so we should now use refit.causalTree
+#calculate propensity 
+#refit.causalTree takes in a repeated vector
+propensity<-mean(B$treatment)
+p=rep(propensity, nrow(B[,1:10]))
+#TOT model, bc we provide the propensity score
+honestTOT<-refit.causalTree(linear.caustree, B, B$y, B$treatment, na.action = na.causalTree, propensity = p)
 honestTOT
-
+#CT model, because we leave propensity as NULL
+honestCTree <- refit.causalTree(linear.caustree, B, B$y, B$treatment, na.action = na.causalTree, propensity = NULL)
+honestCTree
 
 #computed an estimate of the treatment effect using the Q^TOT method
 compute.ystar = function(Y, W){

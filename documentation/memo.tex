@@ -386,39 +386,20 @@ F-statistic: 56.52 on 36 and 464 DF,  p-value: < 2.2e-16
 
 
 
-The following  functions use three different methods to create honest trees based upon the the second sample. The causal tree function can make predictions on the B sample, but these functions will build and return a new tree. 
-Honest TOT and Honest ST are for comparison to the CT model. The TOT and CT models accept a causal tree object, while the ST model expects an rpart object.
-
+The following  functions use three different methods to create honest trees based upon the the second sample. The causal tree function can make predictions on the B sample, but this function will build and return a new tree. 
 \begin{lstlisting}[language=R]
-honestST(object, data, na.action = na.rpart) 
+refit.causalTree(object, newx, newy, treatment, na.action = na.causalTree, propensity = NULL)
 \end{lstlisting}
 \textbf{Arguments} \\
 \begin{itemize}
-  \item object=an rpart model
-  \item data=leaf estimation dataset 
+  \item object: the original causalTree object
+  \item newx: your B sample, the leaf-fitting dataframe
+  \item newy: outcomes for new data
+  \item treatment: treatment assignments for new data
+  \item propensity: If NULL, we estimate a CT. If provided, estimate a TOT
  \end{itemize}
 
 
-\begin{lstlisting}[language=R]
-honestTOT(object, data, treatment, p = 0.5, na.action = na.causalTree) 
-\end{lstlisting}
-\textbf{Arguments} \\
-\begin{itemize}
-  \item object=a fitted causal tree object
-  \item data=leaf estimation dataset 
-  \item treatment=vector of treatments that corresponds to the leaf estimation dataset
-  \item p=propensity 
- \end{itemize}
- 
-\begin{lstlisting}[language=R]
-honestCTree(object, data, treatment, na.action = na.causalTree)
-\end{lstlisting}
-\begin{itemize}
-  \item object=a fitted causal tree object
-  \item data=leaf estimation dataset
-  \item treatment=vector of treatments that corresponds to the leaf estimation dataset
- \end{itemize}
- 
 
  \begin{lstlisting}[language=R]
 causalForest(X, Y, W, num.trees, sample.size = floor(length(Y) / 10), 

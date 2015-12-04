@@ -68,14 +68,14 @@ refit.causalTree <- function(object, newx, newy, treatment, na.action = na.causa
     
   } else if (mode == "TOT") {
   	
-  	Y <- newy / ( p - 1 + treatment)
+  	Y <- newy / ( propensity - 1 + treatment)
    
     yval <- rep(NA, num)
     dev <- rep(NA, num)
     count <- rep(0, num)
   
     # for loop to insert values:
-    for (i in 1:n) {
+    for (i in 1:nrow(newx)) {
       node_id <- where[i]
       while (node_id > 0) {
         index <- which(nodes == node_id)
