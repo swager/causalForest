@@ -10,6 +10,8 @@ refit.causalTree <- function(object, newx, newy, treatment, na.action = na.causa
 
   if (!inherits(object, "causalTree")) stop("Not a legitimate \"causalTree\" object")
   
+  if(length(newy) != length(treatment)) stop("The vectors newy and treatment must have the same length.")
+  
   mode = "CT"
   if(!is.null(propensity)) {
   	mode = "TOT"
@@ -62,7 +64,7 @@ refit.causalTree <- function(object, newx, newy, treatment, na.action = na.causa
     }
   
     # get the final results for each：
-    causal_effect <- y1 /count1 - y0/count0
+    causal_effect <- y1/count1 - y0/count0
     deviance <- dev1 - y1^2/count1 + dev0 - y0^2/count0
     count <- count0 + count1
     
