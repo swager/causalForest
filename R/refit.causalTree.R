@@ -6,15 +6,15 @@
 # treatment: treatment assignments for new data
 # propensity: If NULL, we estimate a CT. If provided, estimate a TOT.
 
-refit.causalTree <- function(object, newx, newy, treatment, na.action = na.causalTree, propensity = NULL) {
+refit.causalTree <- function(object, newx, newy, weights, treatment, na.action = na.causalTree, propensity = NULL) {
 
   if (!inherits(object, "causalTree")) stop("Not a legitimate \"causalTree\" object")
   
   if(length(newy) != length(treatment)) stop("The vectors newy and treatment must have the same length.")
   
-  mode = "CT"
+  mode <- "CT"
   if(!is.null(propensity)) {
-  	mode = "TOT"
+  	mode <- "TOT"
   	if(min(propensity) < 0 | max(propensity) > 1 | length(propensity) != nrow(newx)) {
   		stop("Invalid propensities")
   	}
@@ -30,47 +30,45 @@ refit.causalTree <- function(object, newx, newy, treatment, na.action = na.causa
   }
   
   where <- est.causalTree(object, causalTree.matrix(data))
-  
+
   if (mode == "CT") {
     
     Y <- newy
-    
+    wt <- weights
+
     ## begin to compute the yval and dev:
     # initialize:
     # where num is number of nodes
-    y1 <- rep(NA, num)
-    y0 <- rep(NA, num)
-    dev1 <- rep(NA,num)
-    dev0 <- rep(NA,num)
-    count1 <- rep(0, num)
-    count0 <- rep(0, num)
-    
+
+    y1 <- y0 <- dev1 <- dev0 <- wt1 <- wt0 <- rep(NA, num)
+    count1 <- count0 <- rep(0, num)
+
     # for loop to insert values:
     for (i in 1:nrow(newx)) {
       node_id <- where[i]
       while (node_id > 0) {
         index <- which(nodes == node_id)
         if (treatment[i] == 1) {
-          y1[index] <- sum(y1[index], Y[i], na.rm = T)
+          y1[index] <- sum(y1[index], Y[i]*wt[i], na.rm = T)
           dev1[index] <- sum(dev1[index], Y[i] * Y[i], na.rm = T)
           count1[index] <- count1[index] + 1
+          wt1[index] <- sum(wt1[index], wt[i], na.rm=T)
         } else {
-          y0[index] <- sum(y0[index], Y[i], na.rm = T)
+          y0[index] <- sum(y0[index], Y[i]*wt[i], na.rm = T)
           dev0[index] <- sum(dev0[index], Y[i] * Y[i], na.rm = T)
           count0[index] <- count0[index] + 1
+          wt0[index] <- sum(wt0[index], wt[i], na.rm=T)
         }
         node_id <- floor(node_id / 2)
       }
     }
-  
-    # get the final results for each：
-    causal_effect <- y1/count1 - y0/count0
-    deviance <- dev1 - y1^2/count1 + dev0 - y0^2/count0
+    causal_effect <- y1/wt1 - y0/wt0 
+    deviance <- dev1 - y1^2/wt1 + dev0 - y0^2/wt0
     count <- count0 + count1
-    
+
   } else if (mode == "TOT") {
-  	
-  	Y <- newy / ( propensity - 1 + treatment)
+  	if (any(weights !=1)){stop("Weighting not yet implemented for transformed-outcome trees")}
+    Y <- newy / ( propensity - 1 + treatment)
    
     yval <- rep(NA, num)
     dev <- rep(NA, num)
@@ -90,7 +88,7 @@ refit.causalTree <- function(object, newx, newy, treatment, na.action = na.causa
    
     causal_effect <- yval / count
     deviance <- dev - count * yval^2
-  
+
   } else {
   	stop("Invalid mode")
   }
@@ -122,7 +120,7 @@ refit.causalTree <- function(object, newx, newy, treatment, na.action = na.causa
       deviance[na_dev_index[i]] = deviance[tmp]    
     }
   }
-  
+
   ## above finish athe recursive replacement:
   new_object = object
   new_object$frame$dev <- deviance
