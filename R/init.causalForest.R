@@ -11,4 +11,4 @@ init.causalForest <- function(x, y, w, weights, num.trees) {
   causalForest
 }
 
-#ACD note Feb 1:  added weights as argument and to causalForest list
+
