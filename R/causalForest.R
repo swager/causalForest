@@ -43,7 +43,7 @@ causalForest.getTree <- function(tree.index, X, Y, W, weights, num.obs, sample.s
     `%ni%` <- Negate(`%in%`)
     tab <- tapply(clustvar,clustvar, length)
     clusters <- data.frame(id = names(tab), size = tab)    
-    clusters <- clusters[sample(1:nrow(clusters), size =nrow(clusters)*2, replace = TRUE),]
+    clusters <- clusters[sample(1:nrow(clusters), size =nrow(clusters), replace = FALSE),]
     clusters$cs <- cumsum(clusters$size)
     full.cl <- clusters$id[clusters$cs <= (2*sample.size)]
     train.cl <- clusters$id[clusters$cs < (sample.size)]
