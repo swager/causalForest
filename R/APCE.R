@@ -11,11 +11,6 @@ load_obj <- function(f)
 
 #Function to pre-predict for dtauhat_dx, so that I don't need to feed the whole causal tree to that function
 prepred <- function(m, dat, vars, ngrid = rep(5, length(vars)), vals = NULL, cond = NULL, verbose = T){
-#m = 'forgive_forest'
-#dat = X
-#vars = 'b_facilities_latrine_num'
-#ngrid = 5
-#verbose = T
   m <- load_obj(m)
   if (verbose == T){print('loaded CF')}
   if (is.null(vals)){
@@ -54,17 +49,6 @@ prepred <- function(m, dat, vars, ngrid = rep(5, length(vars)), vals = NULL, con
 
 
 dtauhat_dx <- function(m = NULL, inbag = NULL, prepreds = NULL, dat, vars, ngrid = rep(5, length(vars)), plot_me = TRUE, clusters = NULL, parallel = FALSE, cores = NULL, verbose = FALSE, cond = NULL, weights = rep(1, nrow(dat)), useHardDisk = FALSE, vals = NULL){
-#m <- CF
-#dat <- x
-#vars <- c('V1')
-#ngrid = c(5)
-#clusters = NULL
-#plot_me = TRUE
-#parallel=FALSE
-#verbose = TRUE
-#cores = 1
-#cond= NULL
-#prepreds = NULL
   if (is.null(vals)){
     vals <- list()
     for (i in 1:length(vars)){
@@ -114,9 +98,6 @@ dtauhat_dx <- function(m = NULL, inbag = NULL, prepreds = NULL, dat, vars, ngrid
 
 
 plot_dtaudx <- function(q, dat, plotmat = c(1,3), main = '', boxsize = 2.5, wsize = 5, xlab = NULL){
-#q = APCE_example[[2]]
-#dat = x
-#vars = 'V1'
   if (ncol(q)>4){#if bivariate
     numUnique <- apply(q[,1:2],2,function(x){length(unique(x))})
     mumat <- reshape(as.data.frame(q[,c(1,2,4)]), direction = 'wide', idvar = colnames(q)[1], timevar = colnames(q)[2])[,-1]

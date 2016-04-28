@@ -9,21 +9,6 @@ load_obj <- function(f)
 }
 
 p_imp <- function(x, y, w, weights, vars, parallel = TRUE, cores = ifelse(parallel == TRUE, detectCores()-1, NULL), n_iter = 100, ntree = 100, clustvar, VI, srate = round(nrow(x)*.45), tempsave = FALSE, usetempsave = FALSE, verbose = TRUE){
-#w = x$W
-#y=x$y
-#x=x[grepl('V',colnames(x))]
-#weights = rep(1, nrow(x))
-#vars = as.character(VI_comp$varname[1:5])
-#clustvar = 1:nrow(x)
-#VI=VI
-#n_iter = 100
-#cores = detectCores()
-#parallel=TRUE
-#tempsave = TRUE
-#verbose = TRUE
-#usetempsave = FALSE
-#srate = round(nrow(x)*.45)
-#ntree = 500
   if (parallel == TRUE){
     `%fun%` <- `%dopar%`
     registerDoMC(cores)
