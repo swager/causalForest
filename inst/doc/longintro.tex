@@ -1,0 +1,38 @@
+\documentclass[11pt]{article}
+\usepackage[pdftex]{graphicx}
+\usepackage{Sweave}
+\usepackage{amsmath}
+\addtolength{\textwidth}{1in}
+\addtolength{\oddsidemargin}{-.5in}
+\setlength{\evensidemargin}{\oddsidemargin}
+
+
+%\VignetteIndexEntry{Introduction to Rpart}
+%\VignetteDepends{causalTree}
+%\VignetteDepends{survival}
+% Ross Ihaka suggestions
+\DefineVerbatimEnvironment{Sinput}{Verbatim} {xleftmargin=2em}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{xleftmargin=2em}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{xleftmargin=2em}
+\fvset{listparameters={\setlength{\topsep}{0pt}}}
+\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+
+
+\newcommand{\myfig}[1]{\resizebox{\textwidth}{!}
+                        {\includegraphics{#1.pdf}}}
+\def\tree{\texttt{tree}}
+\def\causalTree{\texttt{causalTree}}
+\def\splus{S-Plus}
+\newcommand{\Co}[1]{\texttt{#1}}
+
+\title {An Introduction to Recursive Partitioning\\
+        Using the RPART Routines}
+\author{Terry M. Therneau \\
+        Elizabeth J. Atkinson\\
+        Mayo Foundation }
+\date{\today}
+
+\begin{document}
+\input{longintro-concordance}
+\maketitle
+\tableofcontents

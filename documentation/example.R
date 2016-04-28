@@ -3,25 +3,25 @@
 #you need only install once, but will need to load the libraries using the library()
 #function everytime you start RStudio
 
-install.packages("devtools")
-install.packages("rpart", dependencies=TRUE, repos='http://cran.us.r-project.org')
-install.packages("rpart.plot", dependencies=TRUE, repos='http://cran.us.r-project.org')
+#install.packages("devtools")
+#install.packages("rpart", dependencies=TRUE, repos='http://cran.us.r-project.org')
+#install.packages("rpart.plot", dependencies=TRUE, repos='http://cran.us.r-project.org')
 library(devtools)  #Load the installed "devtools" package
 library(rpart)   #Load the installed "rparts" package
 library(rpart.plot)
 
 #again, these can be commented out once they have been run once
-install_github("swager/randomForest")
-install_github("swager/randomForestCI")
-install_github("swager/causalForest", auth_token = "<insert your authentication token here")
-install.packages("rattle", dependencies=TRUE,repos='http://cran.us.r-project.org')
-install.packages("knitr", dependencies=TRUE,repos='http://cran.us.r-project.org')
-install.packages("ggplot2", dependencies=TRUE, repos='http://cran.us.r-project.org')
+#install_github("swager/randomForest")
+#install_github("swager/randomForestCI")
+#install_github("swager/causalForest", auth_token = "<insert your authentication token here")
+#install.packages("rattle", dependencies=TRUE,repos='http://cran.us.r-project.org')
+#install.packages("knitr", dependencies=TRUE,repos='http://cran.us.r-project.org')
+#install.packages("ggplot2", dependencies=TRUE, repos='http://cran.us.r-project.org')
 
 #load all packages needed 
 library(randomForest)  
 library(randomForestCI)  
-library(rattle)
+#library(rattle)
 library(causalForest)
 library(ggplot2)
 
@@ -109,7 +109,7 @@ generate <- function(NUM, p, var1, var2, treatsize, coveff, testsize=-99) {
 
 
 Data <- generate(NUM, p, var1, var2, treatsize, coveff)
-
+dim(Data)
 #extract samples A, B and C
 #tree building dataset
 A<-Data$A
@@ -117,7 +117,7 @@ A<-Data$A
 B<-Data$B
 #test dataset
 C<-Data$C
-
+dim(C)
 #for this example, there are 10 covariates, named x1, x2, x3, x4 and so on, up to x10
 #we build a formula using a string
 sumx= paste(head(colnames(A),-3), collapse=" + ")
@@ -153,7 +153,7 @@ p=rep(propensity, nrow(B[,1:10]))
 honestTOT<-refit.causalTree(linear.caustree, B, B$y, B$treatment, na.action = na.causalTree, propensity = p)
 honestTOT
 #CT model, because we leave propensity as NULL
-honestCTree <- refit.causalTree(linear.caustree, B, B$y, B$treatment, na.action = na.causalTree, propensity = NULL)
+honestCTree <- refit.causalTree(linear.caustree, B, B$y, treatment = B$treatment, weights = rep(1, nrow(B)), na.action = na.causalTree, propensity = NULL)
 honestCTree
 
 #computed an estimate of the treatment effect using the Q^TOT method
@@ -212,19 +212,22 @@ names(C_temp)[1:10]<-seq(1,10)
 #Causal Forest handles 'honesty', on its own, so instead of the two step process, as is done above, we pass 
 #causal forest 90% of the dataset, by combining the A and B datasets
 cf_training<-rbind(A_temp, B_temp)
+dim(cf_training)
 #set number of trees, and sample size
 num.trees <- 500
 sample.size <- 225
 cv.option <- "matching"
 #build causal forest, first parameter is the dataframe of covariates
-forest<-causalForest(cf_training[,1:10], cf_training$y, cf_training$w, num.trees, sample.size, cv.option)
+forest<-causalForest(cf_training[,1:10], cf_training$y, cf_training$w, num.trees, sample.size, cv.option, weights = rep(1, nrow(cf_training)))
 #make predictions on the test sample
 predictions = predict(forest, C_temp)
 #get confidence intervals on the predictions 
 forest.ci = randomForestInfJack(forest, C_temp, calibrate = TRUE)
 
-
-
+#lm for average effect and standard error:
+summary(lm(y~treatment, data = C_temp))
+#Sum variances and divide by n^2, then sqrt:
+sqrt(sum(forest.ci[,2])/nrow(forest.ci)^2)
 
 
 

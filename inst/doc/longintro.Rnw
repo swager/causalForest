@@ -33,6 +33,7 @@
 \date{\today}
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 \maketitle
 \tableofcontents
 <<echo=FALSE>>=
