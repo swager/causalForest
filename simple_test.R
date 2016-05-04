@@ -60,6 +60,7 @@ sum(is.na(predict(rct.tot))) == 0
 # Test forests
 #
 
+
 cf = causalForest(DF[,1:p], DF$Y, W, num.trees = 10)
 min(predict(cf, data.frame(X=X)))
 max(predict(cf, data.frame(X=X)))
@@ -69,12 +70,3 @@ pf = propensityForest(DF[,1:p], DF$Y, W, num.trees = 10)
 min(predict(pf, data.frame(X=X)))
 max(predict(pf, data.frame(X=X)))
 class(pf) == "causalForest"
-
-#
-# Test multicore implementation
-#
-
-cf = causalForest(DF[,1:p], DF$Y, W, num.trees = 40, cores = 4)
-min(predict(cf, data.frame(X=X)))
-max(predict(cf, data.frame(X=X)))
-class(cf) == "causalForest"
