@@ -3,14 +3,13 @@
 #Takes a causal forest object, and iterates through the variables in `vars`, permutng them and then estimating the difference in te (out-of-bag) predictions from the resulting forests
 
 varImpCF <- function(f, test.data, parallel = TRUE, cores = ifelse(parallel == TRUE, detectCores()-1, NULL), scrambletimes = 5, vars = NULL, verbose = FALSE){
-  registerDoMC(cores)
   pob <- predictOOB(f, test.data)
   if (is.null(vars)){
     vars <- colnames(f$x)
   }
   if (parallel == TRUE){
     `%fun%` <- `%dopar%`
-    registerDoMC(cores)
+    registerDoParallel(cores)
   } else {
     `%fun%` <- `%do%`
   }

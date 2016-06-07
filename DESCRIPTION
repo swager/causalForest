@@ -10,7 +10,7 @@ Authors@R: c(person("Susan", "Athey", role = c("aut", "cre"),
 Description: Causal trees and forests for heterogeneous treatment effect estimation.
              This package builds on rpart 4.1-8, by Therneau, Atkinson, and Ripley (2014).
 Title: Causal Trees and Forests
-Depends: R (>= 2.15.0), graphics, stats, grDevices, rpart, rpart.plot, foreach, doMC
+Depends: R (>= 2.15.0), graphics, stats, grDevices, rpart, rpart.plot, foreach, doParallel
 License: GPL-2
 LazyData: yes
 ByteCompile: yes

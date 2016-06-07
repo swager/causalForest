@@ -17,7 +17,7 @@ causalForest <- function(X, Y, W, weights = rep(1, nrow(X)), num.trees, sample.s
     forest.raw <- foreach::foreach(tree.index = 1:num.trees) %do%
 	  causalForest.getTree(tree.index, X, Y, W, weights, num.obs, sample.size, mtry, nodesize, init.seed, verbose, clustvar)
   } else {
-  	registerDoMC(cores=cores)
+  	registerDoParallel(cores=cores)
   	forest.raw <- foreach::foreach(tree.index = 1:num.trees) %dopar%
 	  causalForest.getTree(tree.index, X, Y, W, weights, num.obs, sample.size, mtry, nodesize, init.seed, verbose, clustvar)
   }

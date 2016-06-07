@@ -23,7 +23,7 @@ JAB <- function(f= NULL, inbag = NULL, taux = NULL, test.data, clusters = 1:nrow
   } 
   if (parallel == TRUE){
     `%fun%` <- `%dopar%`
-    registerDoMC(cores)
+    registerDoParallel(cores)
     if (useHardDisk == TRUE){
       system('mkdir JABtempmats')
 #print(length(unique(clusters)))
