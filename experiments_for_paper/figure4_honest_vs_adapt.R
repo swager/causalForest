@@ -61,7 +61,7 @@ round(results.condensed, 3)
 
 pdf("output/honesty_vs_adapt_MSE.pdf")
 pardef = par(mar = c(5, 4, 4, 2) + 0.5, cex.lab=1.5, cex.axis=1.5, cex.main=1.5, cex.sub=1.5)
-plot(NA, NA, xlim=range(leaf[-10]), ylim=range(sqrt(results.condensed[-10,])), log="x", xlab="Minimum Leaf Size", ylab="Root-Mean Squared Error", xaxt = "n")
+plot(NA, NA, xlim=range(leaf[-10]), ylim=range(sqrt(results.condensed[-10,])), log="x", xlab="Minimum Leaf Size", ylab="Root-Mean-Squared Error", xaxt = "n")
 axis(1, at=leaf[-10], labels=leaf[-10])
 lines(leaf[-10], sqrt(results.condensed[-10,1]), lwd = 3, col = 2, lty = 2)
 lines(leaf[-10], sqrt(results.condensed[-10,2]), lwd = 3, col = 4, lty = 1)
