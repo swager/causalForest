@@ -2,6 +2,7 @@
 *.Rproj.user
 *.Rhistory
 *.RData
+*.Rout
 src/*.o
 src/*.so
 src/*.dll
