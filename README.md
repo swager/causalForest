@@ -1,11 +1,6 @@
 # causalForest
-Causal trees and forests for estimating heterogeneous treatment effects
+This repository is preserved for the purpose of replicating the experiments from:
 
-Tree-growing methods include the following.
-ST (single tree):
-TT (two trees):
-TOT (transformed outcome tree):
-CT (causal tree with “matching” as cross validation):
+Stefan Wager and Susan Athey. <b>Estimation and Inference of Heterogeneous Treatment Effects using Random Forests.</b> 2015. [<a href="https://arxiv.org/pdf/1510.04342.pdf">arxiv</a>]
 
-
-See documentation folder for example code (example.R) and detailed memo on package installation and usage
+For an actively maintained version of the present software, with a focus on causal trees, see https://github.com/susanathey/causalTree. A more scalable version of causal forests, built in C++, is under development.
