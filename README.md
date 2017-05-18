@@ -1,6 +1,6 @@
-# causalForest
-This repository is preserved for the purpose of replicating the experiments from:
+# DEPRECATED causalForest
+This repository is preserved for archival purposes only, and is not under active maintenance. It has replication scripts for experiments from:
 
 Stefan Wager and Susan Athey. <b>Estimation and Inference of Heterogeneous Treatment Effects using Random Forests.</b> 2015. [<a href="https://arxiv.org/pdf/1510.04342.pdf">arxiv</a>]
 
-For an actively maintained version of the present software, with a focus on causal trees, see https://github.com/susanathey/causalTree. A more scalable version of causal forests, built in C++, is under development.
+For anyone wanting to use causal forests, please see the ```causal.forest()``` function in https://github.com/swager/gradient-forest. This function is more efficiently implemented, has multi-core support, and also appears to have better statistical performance.
